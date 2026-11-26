@@ -1,0 +1,143 @@
+/* ==========================================================================
+   Platine — web.css : réglages propres à l'appli web (iPhone, Android…)
+   Le design commun reste dans widget.css.
+   ========================================================================== */
+
+/* Sur téléphone, il faut un fond : noir profond, comme une platine. */
+html[data-mode="web"], [data-mode="web"] body { background: #0b0b0b; }
+[data-mode="web"] body {
+  height: 100vh;
+  height: 100dvh;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+}
+
+[data-mode="web"] .widget {
+  max-width: 520px;
+  margin: 0 auto;
+  row-gap: 18px;
+  padding:
+    max(20px, env(safe-area-inset-top))
+    max(18px, env(safe-area-inset-right))
+    max(14px, env(safe-area-inset-bottom))
+    max(18px, env(safe-area-inset-left));
+}
+
+/* Pas de fenêtre à déplacer ni à masquer : la barre garde l'appareil et ⚙ */
+[data-mode="web"] [data-deplacer] { cursor: auto; }
+[data-mode="web"] [data-app="hide"] { display: none; }
+[data-mode="web"] .fenetre { width: auto; max-width: 80%; padding: 0 4px 0 12px; gap: 8px; height: 34px; border-radius: 17px; }
+[data-mode="web"] .fenetre-btn { width: 28px; height: 28px; }
+[data-mode="web"] .fenetre svg { width: 16px; height: 16px; }
+[data-mode="web"] .message { bottom: calc(max(14px, env(safe-area-inset-bottom)) + 46px); }
+
+/* Téléphone à l'horizontale : disque à gauche, bloc à droite */
+@media (orientation: landscape) and (max-height: 540px) {
+  [data-mode="web"] .widget {
+    max-width: 980px;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);
+    grid-template-rows: minmax(0, 1fr) auto;
+    grid-template-areas: "platine bloc" "platine fenetre";
+    column-gap: 28px;
+    row-gap: 12px;
+    align-items: center;
+  }
+  [data-mode="web"] .platine { align-self: stretch; height: 100%; }
+  [data-mode="web"] .bloc { align-self: end; }
+  [data-mode="web"] .fenetre { align-self: start; }
+}
+
+/* --------------------------------------------------------------------------
+   Écran de connexion / réglages
+   -------------------------------------------------------------------------- */
+.connexion {
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  display: grid;
+  place-items: center;
+  overflow-y: auto;
+  padding: max(20px, env(safe-area-inset-top)) 18px max(20px, env(safe-area-inset-bottom));
+  background: rgba(6, 6, 6, .86);
+  -webkit-backdrop-filter: blur(18px);
+  backdrop-filter: blur(18px);
+}
+.connexion[hidden] { display: none; }
+.carte {
+  width: 100%;
+  max-width: 400px;
+  display: grid;
+  gap: 12px;
+  padding: 26px 22px 20px;
+  border-radius: 22px;
+  background: #161616;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .08);
+  text-align: center;
+  user-select: text;
+  -webkit-user-select: text;
+}
+.carte .logo { width: 72px; height: 72px; margin: 0 auto; border-radius: 18px; }
+.carte h1 { margin: 0; font-size: 24px; letter-spacing: -.02em; }
+.sous-titre { margin: -6px 0 4px; opacity: .6; font-size: 14px; }
+.cx-message { margin: 0; font-size: 13.5px; line-height: 1.45; color: #cfe9d6; }
+.cx-message:empty { display: none; }
+.cx-message.erreur { color: #ffb4a6; }
+.cx-champ { display: grid; gap: 6px; text-align: left; font-size: 13px; font-weight: 600; }
+.cx-champ[hidden] { display: none; }
+.cx-champ input {
+  font: 15px ui-monospace, "SF Mono", Menlo, monospace;
+  padding: 12px 13px;
+  border-radius: 12px;
+  border: 1px solid #2c2c2c;
+  background: #0d0d0d;
+  color: #fff;
+}
+.cx-champ input:focus { outline: none; border-color: #ff7a59; }
+.cx-btn {
+  all: unset;
+  box-sizing: border-box;
+  display: block;
+  width: 100%;
+  padding: 13px 16px;
+  border-radius: 999px;
+  background: #262626;
+  color: #fff;
+  font-weight: 650;
+  font-size: 15px;
+  text-align: center;
+  cursor: pointer;
+}
+.cx-btn.principal { background: #ff7a59; color: #1a0f0b; }
+.cx-btn.petit { width: auto; display: inline-block; padding: 8px 14px; font-size: 13px; margin-top: 8px; }
+.cx-btn[hidden], .cx-connecte[hidden], .cx-script[hidden], .cx-option[hidden] { display: none; }
+.cx-btn:active { transform: scale(.98); }
+.cx-lien { all: unset; cursor: pointer; font-size: 13px; opacity: .55; padding: 6px; }
+.cx-connecte { display: grid; gap: 10px; }
+.cx-option { display: flex; gap: 10px; align-items: center; justify-content: center; font-size: 14px; padding: 6px 0; }
+.cx-option input { width: 18px; height: 18px; accent-color: #ff7a59; }
+.cx-script { display: grid; gap: 10px; text-align: left; font-size: 13.5px; }
+.cx-script ol { margin: 0; padding-left: 20px; line-height: 1.5; }
+.cx-script textarea {
+  width: 100%;
+  font: 11px ui-monospace, "SF Mono", Menlo, monospace;
+  border-radius: 12px;
+  border: 1px solid #2c2c2c;
+  background: #0d0d0d;
+  color: #bdbdbd;
+  padding: 10px;
+  resize: vertical;
+}
+.cx-note { margin: 0; font-size: 12px; opacity: .55; }
+.cx-aide { text-align: left; font-size: 13px; opacity: .8; margin-top: 4px; }
+.cx-aide summary { cursor: pointer; text-align: center; opacity: .7; }
+.cx-aide p { margin: 10px 0 6px; line-height: 1.45; }
+.cx-aide code {
+  display: block;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: #0d0d0d;
+  border: 1px dashed #3a3a3a;
+  color: #ffd2c4;
+  font: 12.5px ui-monospace, "SF Mono", Menlo, monospace;
+  overflow-wrap: anywhere;
+}

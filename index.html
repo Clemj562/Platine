@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="fr" data-mode="web">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Platine</title>
+<meta name="description" content="Le vinyle de ce que tu écoutes sur Spotify.">
+<meta name="theme-color" content="#0b0b0b">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Platine">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<link rel="stylesheet" href="widget.css">
+<link rel="stylesheet" href="web.css">
+
+<!-- Ordre important : réglages, connexion Spotify, moteur, puis ton script. -->
+<script src="config.js"></script>
+<script src="platine-web.js" defer></script>
+<script src="platine-api.js" defer></script>
+<script src="widget.js" defer></script>
+</head>
+<body>
+
+<main class="widget">
+
+  <!-- Le vinyle : il tourne pendant la lecture, la pochette sert d'étiquette -->
+  <div class="platine">
+    <div class="vinyle">
+      <div class="disque" data-solide data-deplacer>
+        <div class="etiquette">
+          <img data-bind="cover" alt="" draggable="false">
+        </div>
+        <span class="trou"></span>
+      </div>
+      <span class="reflet"></span>
+    </div>
+  </div>
+
+  <!-- Bloc du dessous : fond flouté aux couleurs de la pochette -->
+  <section class="bloc" data-solide data-deplacer>
+
+    <!-- Titre, artiste, cœur -->
+    <div class="infos">
+      <span class="infos-vide" aria-hidden="true"></span>
+      <div class="textes">
+        <p class="titre"><span data-bind="title" data-empty-text="Rien en lecture"></span></p>
+        <p class="artiste" data-bind="artist" data-empty-text="Lance un titre sur Spotify"></p>
+      </div>
+      <button class="btn coeur" type="button" data-action="like" title="Titres likés">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path class="trait" d="M12 20.2s-7.5-4.6-7.5-10.4A4.3 4.3 0 0 1 12 7a4.3 4.3 0 0 1 7.5 2.8c0 5.8-7.5 10.4-7.5 10.4z"/></svg>
+      </button>
+    </div>
+
+    <!-- Progression -->
+    <div class="progression">
+      <span class="temps" data-bind="time"></span>
+      <div class="barre" data-seek>
+        <div class="piste"><div class="rempli"></div><span class="curseur"></span></div>
+      </div>
+      <span class="temps fin" data-bind="duration"></span>
+    </div>
+
+    <!-- Commandes -->
+    <div class="commandes">
+      <button class="btn bascule aleatoire" type="button" data-action="shuffle" title="Lecture aléatoire">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path class="trait" d="M3 7h3.2c2 0 3.3 1 4.5 2.8l2.6 4.4C14.5 16 15.8 17 17.8 17H21M3 17h3.2c1.3 0 2.3-.4 3.1-1.2M14.4 8.2c.8-.8 1.9-1.2 3.4-1.2H21M18.3 4.3 21 7l-2.7 2.7M18.3 14.3 21 17l-2.7 2.7"/></svg>
+      </button>
+      <button class="btn" type="button" data-action="prev" title="Précédent">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 6.3v11.4a.9.9 0 0 1-1.42.74l-8.1-5.7a.9.9 0 0 1 0-1.48l8.1-5.7A.9.9 0 0 1 19 6.3zM5.5 5h.9a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1h-.9a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1z"/></svg>
+      </button>
+      <button class="btn lecture" type="button" data-action="playpause">
+        <svg class="icone-play" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.6v12.8a1 1 0 0 0 1.52.85l10.2-6.4a1 1 0 0 0 0-1.7L9.52 4.75A1 1 0 0 0 8 5.6z"/></svg>
+        <svg class="icone-pause" viewBox="0 0 24 24" aria-hidden="true"><path d="M7.5 5H10a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H7.5a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1zM14 5h2.5a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H14a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1z"/></svg>
+      </button>
+      <button class="btn" type="button" data-action="next" title="Suivant">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 6.3v11.4a.9.9 0 0 0 1.42.74l8.1-5.7a.9.9 0 0 0 0-1.48l-8.1-5.7A.9.9 0 0 0 5 6.3zM17.6 5h.9a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1h-.9a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1z"/></svg>
+      </button>
+      <button class="btn bascule repeter" type="button" data-action="repeat" title="Répéter">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path class="trait" d="M4 12V9.5A3.5 3.5 0 0 1 7.5 6H19M16.3 3.3 19 6l-2.7 2.7M20 12v2.5a3.5 3.5 0 0 1-3.5 3.5H5M7.7 20.7 5 18l2.7-2.7"/></svg>
+      </button>
+    </div>
+
+  </section>
+
+  <!-- Petite barre sous le lecteur (appli) : réglages et masquer -->
+  <nav class="fenetre" data-solide data-deplacer aria-label="Fenêtre">
+    <svg class="fenetre-poignee" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6h.01M15 6h.01M9 12h.01M15 12h.01M9 18h.01M15 18h.01"/></svg>
+    <span class="fenetre-titre" data-bind="device" data-empty-text="Platine"></span>
+    <button class="fenetre-btn" type="button" data-app="settings" title="Réglages">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg>
+    </button>
+    <button class="fenetre-btn" type="button" data-app="hide" title="Masquer (revient à la prochaine lecture)">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>
+    </button>
+  </nav>
+
+  <p class="message" data-bind="message" role="status"></p>
+
+</main>
+
+<!-- Écran de connexion / réglages (bouton ⚙ de la barre) -->
+<div class="connexion" id="connexion" hidden>
+  <div class="carte">
+    <img class="logo" src="icons/icon-192.png" alt="">
+    <h1>Platine</h1>
+    <p class="sous-titre">Le vinyle de ce que tu écoutes sur Spotify.</p>
+    <p class="cx-message" id="cx-message" role="status"></p>
+
+    <label class="cx-champ" id="cx-client-zone">Client ID de l’app Spotify
+      <input id="cx-client" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="ex. 3f2a…">
+    </label>
+    <button class="cx-btn principal" type="button" id="cx-login">Se connecter avec Spotify</button>
+
+    <div class="cx-connecte" id="cx-connecte" hidden>
+      <label class="cx-option" id="cx-wake-zone"><input type="checkbox" id="cx-wake"> Garder l’écran allumé pendant la lecture</label>
+      <button class="cx-btn" type="button" id="cx-widget">Créer mon widget iPhone</button>
+      <div class="cx-script" id="cx-script-zone" hidden>
+        <ol>
+          <li>Installe <b>Scriptable</b> (gratuit, App Store).</li>
+          <li>Ouvre-la, touche <b>+</b>, colle le script, nomme-le <b>Platine</b>, puis ▶︎ pour l’essayer.</li>
+          <li>Écran d’accueil ou écran verrouillé → ajouter un widget <b>Scriptable</b> → touche-le → Script : <b>Platine</b>.</li>
+        </ol>
+        <textarea id="cx-script" readonly rows="6"></textarea>
+        <button class="cx-btn" type="button" id="cx-script-copy">Copier le script</button>
+        <p class="cx-note">Ce script contient ton accès Spotify : ne le partage pas.</p>
+      </div>
+      <button class="cx-btn principal" type="button" id="cx-close">Retour au vinyle</button>
+      <button class="cx-lien" type="button" id="cx-logout">Se déconnecter</button>
+    </div>
+
+    <details class="cx-aide">
+      <summary>Adresse à déclarer dans Spotify</summary>
+      <p>Sur developer.spotify.com → ton app → Settings → <b>Redirect URIs</b>, ajoute exactement :</p>
+      <code id="cx-redirect"></code>
+      <button class="cx-btn petit" type="button" id="cx-copy">Copier</button>
+    </details>
+  </div>
+</div>
+
+</body>
+</html>

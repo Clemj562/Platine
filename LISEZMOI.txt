@@ -1,0 +1,78 @@
+PLATINE — iPhone (et Android), sans Mac et gratuit
+===================================================
+
+Deux choses dans ce dossier :
+1. L'APPLI WEB : le vinyle qui tourne + les boutons, en plein écran. Elle
+   s'installe sur l'écran d'accueil comme une vraie app.
+2. LE WIDGET : vinyle + pochette, titre, artiste et temps qui défile, pour
+   l'écran d'accueil et l'écran verrouillé, via l'app gratuite Scriptable.
+
+Limites d'iOS (aucune app ne peut les contourner) :
+- le lecteur de l'écran verrouillé / Centre de contrôle reste celui d'iOS ;
+- un widget ne peut pas s'animer : le disque y est fixe, et iOS décide
+  quand il se met à jour (le temps, lui, défile en direct).
+
+
+1. METTRE L'APPLI EN LIGNE (gratuit, une seule fois, depuis ton PC)
+-------------------------------------------------------------------
+On utilise GitHub Pages (hébergement gratuit).
+1. Connecte-toi sur github.com (compte gratuit).
+2. « New repository » → nom : platine → Public → Create repository.
+3. Clique « uploading an existing file » et glisse TOUT le contenu de ce
+   dossier (les fichiers, pas le dossier lui-même) → « Commit changes ».
+4. Settings → Pages → Source : « Deploy from a branch » → Branch : main,
+   dossier / (root) → Save. 1 à 2 minutes plus tard, ton appli est sur :
+       https://TON-PSEUDO.github.io/platine/
+5. Sur developer.spotify.com → ton app → Settings → Edit → Redirect URIs :
+   ajoute exactement cette adresse (avec le / final) → Save.
+6. Facultatif mais pratique : sur GitHub, ouvre config.js → crayon (Edit) →
+   colle ton Client ID entre les guillemets → Commit. Tes amis n'auront
+   plus qu'à toucher « Se connecter avec Spotify ».
+   (Le Client ID n'est pas secret. Ne mets JAMAIS ton client secret.)
+7. Pour tes amis : ajoute leur e-mail Spotify dans User Management (5 max).
+
+
+2. INSTALLER SUR L'IPHONE
+-------------------------
+1. Ouvre l'adresse https://TON-PSEUDO.github.io/platine/ dans Safari.
+2. Bouton Partager → « Sur l'écran d'accueil » → Ajouter.
+3. Ouvre Platine depuis l'écran d'accueil, puis « Se connecter avec Spotify ».
+   (L'app de l'écran d'accueil a sa propre mémoire : la connexion se fait
+   dedans, pas dans Safari.)
+4. Lance de la musique sur Spotify : le vinyle tourne.
+
+⚙ (en bas) : garder l'écran allumé pendant la lecture, créer le widget,
+se déconnecter.
+Si après la connexion tu te retrouves dans Safari au lieu de l'app : ferme
+l'onglet, rouvre Platine depuis l'écran d'accueil et reconnecte-toi.
+(Platine marche aussi directement dans Safari, ou sur Android avec Chrome →
+« Installer l'application ».)
+
+
+3. LE WIDGET (écran d'accueil / écran verrouillé)
+-------------------------------------------------
+1. Installe Scriptable (gratuit, App Store).
+2. Dans Platine : ⚙ → « Créer mon widget iPhone » → connecte-toi →
+   « Copier le script ».
+3. Dans Scriptable : + → colle → nomme le script « Platine » → ▶︎ pour
+   voir l'aperçu.
+4. Écran d'accueil : appui long → + → Scriptable → taille au choix →
+   Ajouter, puis touche le widget → Script : Platine.
+   Écran verrouillé : appui long → Personnaliser → widgets → Scriptable →
+   touche-le → Script : Platine.
+Toucher le widget ouvre Spotify. Le script contient ton accès Spotify :
+ne le partage pas (chaque ami crée le sien depuis son iPhone).
+
+
+4. MODIFIER LE DESIGN
+---------------------
+Même principe que l'appli ordinateur : widget.css (style commun),
+web.css (réglages propres au téléphone), index.html, widget.js.
+Pour tester en local : Live Server dans VS Code → le mode démo ne s'affiche
+pas ici (l'appli attend une vraie connexion) ; garde apercu.html de l'appli
+ordinateur pour travailler le design. Après modification, renvoie les
+fichiers sur GitHub : l'iPhone récupère la nouvelle version au prochain
+lancement.
+
+Rappels Spotify : 5 comptes autorisés par app, et Premium pour les boutons
+de lecture (sans Premium : affichage seulement).
